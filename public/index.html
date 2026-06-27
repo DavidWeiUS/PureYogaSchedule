@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PureYoga 课程表生成器</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #F2EDE4;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    color: #3D2B1F;
+  }
+  .container { max-width: 700px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #3B3127;
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin-bottom: 1.2rem;
+  }
+  .header img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #C9A84C; }
+  .header-text h1 { color: #F5EDD8; font-size: 20px; font-weight: 700; letter-spacing: 2px; font-family: serif; }
+  .header-text p  { color: #C9A84C; font-size: 11px; letter-spacing: 3px; margin-top: 4px; }
+
+  /* Card */
+  .card {
+    background: #FBF7F0;
+    border-radius: 14px;
+    padding: 1.4rem;
+    margin-bottom: 0.9rem;
+    border: 1px solid #DDD3BA;
+  }
+  .card label { display: block; font-size: 13px; color: #7A6548; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px; }
+  textarea {
+    width: 100%; min-height: 180px; resize: none; overflow: hidden;
+    font-size: 15px; line-height: 1.8;
+    padding: 12px 14px;
+    border: 1px solid #CDBFA0;
+    border-radius: 10px;
+    background: #F7F2E8;
+    color: #3D2B1F;
+    font-family: inherit;
+    transition: border-color .15s;
+  }
+  textarea:focus { outline: none; border-color: #8B7355; background: #fff; }
+  .hint { font-size: 12px; color: #A89270; margin-top: 8px; line-height: 1.6; }
+
+  /* Examples */
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+  .eg-chip {
+    font-size: 12px; padding: 5px 12px;
+    background: #EDE5D4; color: #6B5232;
+    border-radius: 20px; cursor: pointer;
+    border: 1px solid #CDBFA0;
+    transition: background .12s;
+  }
+  .eg-chip:hover { background: #DDD3BA; }
+
+  /* Theme selector */
+  .theme-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 0.9rem; }
+  .theme-label { font-size: 12px; color: #A89270; white-space: nowrap; }
+  .theme-chip {
+    font-size: 12px; padding: 5px 13px;
+    background: #F7F2E8; color: #7A6548;
+    border-radius: 20px; cursor: pointer;
+    border: 1.5px solid #CDBFA0;
+    font-weight: 500;
+    transition: all .15s;
+  }
+  .theme-chip:hover { background: #EDE5D4; }
+  .theme-chip.active { background: #4A3728; color: #F5EDD8; border-color: #4A3728; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 10px; margin-bottom: 0.9rem; }
+  .btn-main {
+    flex: 1; padding: 12px;
+    background: #4A3728; color: #F5EDD8;
+    border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: opacity .15s;
+    letter-spacing: 1px;
+  }
+  .btn-main:hover { opacity: .85; }
+  .btn-main:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-ghost {
+    padding: 12px 20px;
+    background: #FBF7F0; color: #7A6548;
+    border: 1px solid #CDBFA0;
+    border-radius: 10px; font-size: 15px;
+    cursor: pointer; transition: background .12s;
+  }
+  .btn-ghost:hover { background: #EDE5D4; }
+
+  /* Status */
+  .status { font-size: 13px; color: #7A6548; text-align: center; padding: 6px; min-height: 28px; }
+  .status.err { color: #9B3A2A; }
+
+  /* Output */
+  #out { display: none; }
+  .out-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .out-hd span { font-size: 13px; font-weight: 500; color: #7A6548; }
+  .btn-dl {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px;
+    background: #4A3728; color: #F5EDD8;
+    border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: opacity .15s;
+  }
+  .btn-dl:hover { opacity: .85; }
+  canvas {
+    display: block; width: 100%; height: auto;
+    border-radius: 12px;
+    border: 1px solid #DDD3BA;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <img src="/logo.png" alt="PureYoga logo">
+    <div class="header-text">
+      <h1>PURE YOGA</h1>
+      <p>MEDITATION &amp; WELLNESS</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <label>下周课程安排</label>
+    <textarea id="inst" placeholder="例：周一9点艾杨格基础，周三晚7点中级，周六10点骨盆修复（需提前预约），周日下午3点倒置序列专题" oninput="autoResize(this)"></textarea>
+    <div class="hint">用自然语言描述即可，AI 会自动识别课程时段与类型。</div>
+    <div class="examples">
+      <span class="eg-chip" onclick="fillExample(0)">普通周</span>
+      <span class="eg-chip" onclick="fillExample(1)">加专题课</span>
+      <span class="eg-chip" onclick="fillExample(2)">含备注</span>
+    </div>
+  </div>
+
+  <div class="theme-row">
+    <span class="theme-label">风格：</span>
+    <span class="theme-chip active" data-theme="random" onclick="selectTheme('random')">✦ 随机禅意</span>
+    <span class="theme-chip" data-theme="0" onclick="selectTheme('0')">墨竹禅意</span>
+    <span class="theme-chip" data-theme="1" onclick="selectTheme('1')">茶烟山水</span>
+    <span class="theme-chip" data-theme="2" onclick="selectTheme('2')">松月清荷</span>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-main" id="gbtn" onclick="generate()">✦ 生成课表</button>
+    <button class="btn-ghost" onclick="resetAll()">清空</button>
+  </div>
+  <div class="status" id="st"></div>
+
+  <div id="out">
+    <div class="out-hd">
+      <span id="theme-name"></span>
+      <button class="btn-dl" onclick="dlImg()">↓ 保存图片</button>
+    </div>
+    <canvas id="cv"></canvas>
+  </div>
+
+</div>
+
+<script>
+const EXAMPLES = [
+  '周一10:30艾杨格基础，周四10:30艾杨格基础，周六9:00艾杨格基础，周一20:00扭转的艺术，周二20:00站立开肩，周四20:00站立开髋，周三18:30腿部练习，周日20:00艾杨格一级',
+  '周二10点初级，周四晚7点中级，周六9点骨盆修复专题，周日下午3点倒置序列专题',
+  '周一9点初级（新同学欢迎），周三晚7点中级，周六10点骨盆修复（需提前告知），周日取消'
+];
+
+// ── Zen Themes ──
+const THEMES = [
+  {
+    name: '墨竹禅意',
+    bg:       '#F7F3EC',
+    hdrBg:    '#3D3020',
+    hdrText:  '#F5EDD8',
+    accent:   '#8B7355',
+    dayBg:    '#556048',
+    dayText:  '#F5F0E8',
+    timeBg:   '#EAE4D4',
+    timeText: '#4A5E38',
+    gridLine: '#C8BAA0',
+    rowAlt:   '#F0EAE0',
+    footBg:   '#3D3020',
+    footText: '#C9A84C',
+    classColors: [
+      { bg:'#E2ECD8', text:'#2E4A1A' },
+      { bg:'#EDE0CE', text:'#6B4226' },
+      { bg:'#D8E2ED', text:'#1A3050' },
+      { bg:'#EDD8E8', text:'#501A42' },
+      { bg:'#E8EDD8', text:'#3A4A1A' },
+      { bg:'#D8EDEA', text:'#1A4A44' },
+    ]
+  },
+  {
+    name: '茶烟山水',
+    bg:       '#F8F3EA',
+    hdrBg:    '#5C3D28',
+    hdrText:  '#FFF3E0',
+    accent:   '#C9A060',
+    dayBg:    '#8C6040',
+    dayText:  '#FFF3E0',
+    timeBg:   '#F0E4D0',
+    timeText: '#7A5030',
+    gridLine: '#D4C0A0',
+    rowAlt:   '#F5EDE0',
+    footBg:   '#5C3D28',
+    footText: '#D4A860',
+    classColors: [
+      { bg:'#EAE0D0', text:'#6B4020' },
+      { bg:'#D0EAE0', text:'#205A44' },
+      { bg:'#E0D0EA', text:'#502060' },
+      { bg:'#D0E0EA', text:'#203858' },
+      { bg:'#EAE8D0', text:'#6B5820' },
+      { bg:'#D0EAE8', text:'#205856' },
+    ]
+  },
+  {
+    name: '松月清荷',
+    bg:       '#F2F5F0',
+    hdrBg:    '#283D34',
+    hdrText:  '#EEF5EE',
+    accent:   '#7AAA80',
+    dayBg:    '#3A6050',
+    dayText:  '#EEF8F4',
+    timeBg:   '#E0EEE8',
+    timeText: '#284A3C',
+    gridLine: '#B8D4C4',
+    rowAlt:   '#F5F8F4',
+    footBg:   '#283D34',
+    footText: '#90C898',
+    classColors: [
+      { bg:'#D8EEE6', text:'#18503A' },
+      { bg:'#EED8E4', text:'#50182E' },
+      { bg:'#D8E0EE', text:'#182850' },
+      { bg:'#EEEED8', text:'#3A5018' },
+      { bg:'#EEE4D8', text:'#50361A' },
+      { bg:'#D8EEEC', text:'#184E4C' },
+    ]
+  }
+];
+
+// ── B.K.S. Iyengar Quotes ──
+const QUOTES = [
+  '身体是你的庙宇，保持它洁净纯粹，让灵魂居于其中。',
+  '瑜伽是一面镜子，让你向内看见自己的灵魂。',
+  '智慧在身体每一个毛孔中流淌。',
+  '呼吸是生命的桥梁，连接身体与思想。',
+  '在静止中找到运动，在运动中找到静止，这是瑜伽的奥秘。',
+  '保持谦逊，向大自然和生命的法则学习，这便是瑜伽的精髓。',
+  '健康是礼物，知足是财富，信任是朋友，涅槃是幸福。',
+  '身体的柔软，源于心灵的柔软。',
+  '当内心平静时，外在的困难便失去了力量。',
+  '每一次深呼吸，都是一次回到自我的旅程。',
+  '练习瑜伽，不是为了完美，而是为了完整。',
+  '每一个体式，都是通往内心平静的一扇门。',
+  '改变是运动，运动是生命，生命是爱，爱是神。',
+  '瑜伽培育力量、智慧与优雅，以克服恐惧、怀疑和无知。',
+  '无论你多么努力练习，都有更深的层次等待探索。',
+  '当你了解自己的身体，你便了解了宇宙的法则。',
+  '觉知即是瑜伽，瑜伽即是合一。',
+  '身体是有限的，但通过练习，你可以触碰无限。',
+];
+
+let selectedTheme = 'random';
+
+function selectTheme(t) {
+  selectedTheme = t;
+  document.querySelectorAll('.theme-chip').forEach(el => {
+    el.classList.toggle('active', el.dataset.theme === t);
+  });
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.max(180, el.scrollHeight) + 'px';
+}
+
+function fillExample(i) {
+  const el = document.getElementById('inst');
+  el.value = EXAMPLES[i];
+  autoResize(el);
+}
+
+function getWeekInfo(){
+  const today = new Date();
+  const diff = (8 - today.getDay()) % 7 || 7;
+  const mon = new Date(today); mon.setDate(today.getDate() + diff);
+  const days = ['周一','周二','周三','周四','周五','周六','周日'];
+  const dates = {};
+  days.forEach((d, i) => {
+    const dt = new Date(mon); dt.setDate(mon.getDate() + i);
+    dates[d] = `${dt.getMonth()+1}/${dt.getDate()}`;
+  });
+  const e = new Date(mon); e.setDate(mon.getDate() + 6);
+  const weekStr = `${mon.getMonth()+1}月${mon.getDate()}日—${e.getMonth()+1}月${e.getDate()}日`;
+  const WEEK_CN = ['一', '二', '三', '四', '五'];
+  const weekNum = Math.ceil(mon.getDate() / 7);
+  const weekCN  = WEEK_CN[weekNum - 1] || String(weekNum);
+  const title = `${mon.getFullYear()}年${mon.getMonth()+1}月 第${weekCN}周瑜伽课表`;
+  return { dates, weekStr, title };
+}
+
+async function generate(){
+  const inst = document.getElementById('inst').value.trim();
+  if (!inst) { setSt('请先输入课程安排', true); return; }
+
+  const btn = document.getElementById('gbtn');
+  btn.disabled = true;
+  setSt('AI 正在生成课表…');
+  document.getElementById('out').style.display = 'none';
+
+  const { dates, weekStr, title } = getWeekInfo();
+  const themeIdx = selectedTheme === 'random'
+    ? Math.floor(Math.random() * THEMES.length)
+    : parseInt(selectedTheme);
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        system: `你是PureYoga的课程助理。根据老师描述生成瑜伽课表JSON。
+默认参考周（若老师未指定则使用）：${JSON.stringify(dates)}，周期"${weekStr}"，标题"${title}"。
+重要：若老师描述中指定了年份、月份或第几周（如"7月第一周""6月第四周"），必须以老师指定的为准，重新计算该周周一至周日的正确日期，并生成对应的week和title，不得使用默认参考周。
+只输出JSON，无其他文字，格式：
+{"week":"M月D日—M月D日","title":"YYYY年M月 第X周瑜伽课表","classes":[{"day":"周一","date":"M/D","timeStart":"09:00","timeEnd":"10:15","type":"艾杨格基础","note":""}]}
+规则：按周一到周日、同天按时间早晚排序；timeStart/timeEnd用HH:MM格式；note填特殊备注，无则空字符串；如某天有多节课分多条记录；title中第X周的X用中文（一二三四五）。`,
+        messages: [{ role: 'user', content: inst }]
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message || data.error);
+
+    const txt = data.content[0].text.replace(/```json|```/g, '').trim();
+    const schedule = JSON.parse(txt);
+
+    await renderCanvas(schedule, themeIdx, dates);
+    document.getElementById('out').style.display = 'block';
+    document.getElementById('theme-name').textContent = THEMES[themeIdx].name;
+    setSt('');
+  } catch(err) {
+    setSt('生成失败：' + err.message, true);
+    console.error(err);
+  }
+  btn.disabled = false;
+}
+
+// ── Canvas renderer ──
+function renderCanvas(d, themeIdx, dates) {
+  return new Promise(resolve => {
+    const cv  = document.getElementById('cv');
+    const T   = THEMES[themeIdx] || THEMES[0];
+    const SCALE = 2;   // 2x for high-DPI / crisp output
+
+    // Layout (logical pixels — SCALE applied via ctx.scale)
+    const W      = 1050;
+    const TIME_W = 138;
+    const COL_W  = Math.floor((W - TIME_W) / 7);   // 130 px
+    const HDR_H  = 138;
+    const DAY_H  = 68;
+    const ROW_H  = 96;
+    const QUOTE_H = 88;
+    const BOT_H  = 52;
+
+    // Pick a random quote for this render
+    const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+    // Data processing
+    const DAYS = ['周一','周二','周三','周四','周五','周六','周日'];
+    const timeSlots = [...new Set(d.classes.map(c => c.timeStart || c.time))].sort();
+    const timeEndMap = {}, typeColorMap = {};
+    let ci = 0;
+    d.classes.forEach(c => {
+      const ts = c.timeStart || c.time;
+      if (!timeEndMap[ts]) timeEndMap[ts] = c.timeEnd || '';
+      if (!typeColorMap[c.type]) typeColorMap[c.type] = T.classColors[ci++ % T.classColors.length];
+    });
+    // Derive dates from AI's own d.week string — guaranteed to match the title
+    const dateMap = parseDateMapFromWeek(d.week, d.title) || dates || getWeekInfo().dates;
+    const grid = {};
+    timeSlots.forEach(t => { grid[t] = {}; });
+    d.classes.forEach(c => { grid[c.timeStart || c.time][c.day] = c; });
+
+    // Canvas setup (physical pixels = logical × SCALE)
+    const H = HDR_H + DAY_H + timeSlots.length * ROW_H + QUOTE_H + BOT_H;
+    cv.width  = W * SCALE;
+    cv.height = H * SCALE;
+    const ctx = cv.getContext('2d');
+    ctx.scale(SCALE, SCALE);
+
+    // ── Background ──
+    ctx.fillStyle = T.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Logo + studio name layout constants (used here and in drawLogo)
+    const LOGO_CX = 58, LOGO_CY = HDR_H / 2, LOGO_R = 42;
+    const STUDIO_X = LOGO_CX + LOGO_R + 16;  // text starts right of circle ≈ 116
+    const DIV_X    = 310;                      // divider separating name from title
+
+    // ── Header — full width, unified bg ──
+    ctx.fillStyle = T.hdrBg;
+    ctx.fillRect(0, 0, W, HDR_H);
+
+    // Accent bottom stripe
+    ctx.fillStyle = T.accent;
+    ctx.fillRect(0, HDR_H - 3, W, 3);
+
+    // Studio name — drawn before logo (logo circle draws on top, no overlap since text is right of circle)
+    ctx.fillStyle = T.hdrText;
+    ctx.font = 'bold 23px serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('PURE YOGA', STUDIO_X, HDR_H / 2 - 12);
+
+    ctx.fillStyle = T.accent;
+    ctx.font = '12px sans-serif';
+    ctx.fillText('MEDITATION  &  WELLNESS', STUDIO_X, HDR_H / 2 + 14);
+
+    // Divider between studio name zone and title zone
+    ctx.fillStyle = 'rgba(255,255,255,0.20)';
+    ctx.fillRect(DIV_X, 14, 1, HDR_H - 28);
+
+    // Schedule title (right half)
+    const titleX = DIV_X + (W - DIV_X) / 2;
+    // Split title into year/month + week-type, rendered on the same line with a wider gap
+    const titleMatch = (d.title || '').match(/^(.+年.+月)\s*(第.+)$/);
+    const ymStr = titleMatch ? titleMatch[1] : (d.title || d.week);
+    const wkStr = titleMatch ? titleMatch[2] : '';
+
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 30px serif';
+
+    // Measure both parts so we can center the combined line
+    const GAP  = 35;   // extra spacing between "年月" and "第X周…"
+    const ymW  = ctx.measureText(ymStr).width;
+    const wkW  = ctx.measureText(wkStr || ymStr).width;
+    const lineW = ymW + GAP + wkW;
+    const lineX = titleX - lineW / 2;   // left edge of combined line
+
+    ctx.fillStyle = T.hdrText;
+    ctx.textAlign = 'left';
+    ctx.fillText(ymStr,          lineX,         HDR_H / 2 - 10);
+    ctx.fillText(wkStr || ymStr, lineX + ymW + GAP, HDR_H / 2 - 10);
+
+    // Date range — small accent line below
+    ctx.fillStyle = T.accent;
+    ctx.font = '600 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(d.week, titleX, HDR_H / 2 + 18);
+
+    // ── Day-header row ──
+    ctx.fillStyle = T.dayBg;
+    ctx.fillRect(0, HDR_H, W, DAY_H);
+
+    // "时间" cell
+    ctx.fillStyle = T.dayText;
+    ctx.font = 'bold 18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('时  间', TIME_W / 2, HDR_H + DAY_H / 2);
+
+    // Day columns
+    DAYS.forEach((day, i) => {
+      const x = TIME_W + i * COL_W;
+      if (i > 0) {
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillRect(x, HDR_H, 1, DAY_H);
+      }
+      ctx.fillStyle = T.dayText;
+      ctx.font = 'bold 18px sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(day, x + COL_W / 2, HDR_H + 24);
+      ctx.font = '14px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.80)';
+      ctx.fillText((dateMap[day] || '').replace('/', '.'), x + COL_W / 2, HDR_H + 46);
+    });
+
+    // ── Time-slot rows ──
+    timeSlots.forEach((ts, ri) => {
+      const ry = HDR_H + DAY_H + ri * ROW_H;
+
+      // Time cell
+      ctx.fillStyle = T.timeBg;
+      ctx.fillRect(0, ry, TIME_W, ROW_H);
+
+      const te = timeEndMap[ts] || '';
+      ctx.fillStyle = T.timeText;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      if (te) {
+        ctx.font = '600 16px sans-serif';
+        ctx.fillText(ts, TIME_W / 2, ry + ROW_H / 2 - 19);
+        ctx.fillStyle = T.timeText;
+        ctx.font = '600 14px sans-serif';
+        ctx.fillText('～', TIME_W / 2, ry + ROW_H / 2 + 0);
+        ctx.fillStyle = T.timeText;
+        ctx.font = '600 16px sans-serif';
+        ctx.fillText(te, TIME_W / 2, ry + ROW_H / 2 + 19);
+      } else {
+        ctx.font = '600 17px sans-serif';
+        ctx.fillText(ts, TIME_W / 2, ry + ROW_H / 2);
+      }
+
+      // Day cells
+      DAYS.forEach((day, di) => {
+        const cx  = TIME_W + di * COL_W;
+        const cls = grid[ts][day];
+
+        ctx.fillStyle = ri % 2 === 1 ? T.rowAlt : T.bg;
+        ctx.fillRect(cx, ry, COL_W, ROW_H);
+
+        if (cls) {
+          const col = typeColorMap[cls.type] || T.classColors[0];
+          const PAD = 8;
+          ctx.fillStyle = col.bg;
+          rrFill(ctx, cx + PAD, ry + PAD, COL_W - PAD * 2, ROW_H - PAD * 2, 9);
+
+          ctx.fillStyle = col.text;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const txt = cls.type;
+          const hasNote = !!cls.note;
+          if (txt.length <= 5) {
+            ctx.font = '600 17px sans-serif';
+            ctx.fillText(txt, cx + COL_W / 2, ry + ROW_H / 2 - (hasNote ? 11 : 0));
+          } else {
+            ctx.font = '600 15px sans-serif';
+            ctx.fillText(txt.slice(0, 5), cx + COL_W / 2, ry + ROW_H / 2 - (hasNote ? 20 : 11));
+            ctx.fillText(txt.slice(5),    cx + COL_W / 2, ry + ROW_H / 2 - (hasNote ? 4  : -11));
+          }
+          if (hasNote) {
+            ctx.font = '13px sans-serif';
+            ctx.fillStyle = col.text + 'AA';
+            const n = cls.note.length > 7 ? cls.note.slice(0, 7) + '…' : cls.note;
+            ctx.fillText(n, cx + COL_W / 2, ry + ROW_H - 12);
+          }
+        }
+
+        ctx.strokeStyle = T.gridLine;
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(cx + 0.25, ry + 0.25, COL_W - 0.5, ROW_H - 0.5);
+      });
+
+      // Time cell border
+      ctx.strokeStyle = T.gridLine;
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(0.25, ry + 0.25, TIME_W - 0.5, ROW_H - 0.5);
+    });
+
+    // ── Quote section ──
+    const qy = HDR_H + DAY_H + timeSlots.length * ROW_H;
+    ctx.fillStyle = T.timeBg;
+    ctx.fillRect(0, qy, W, QUOTE_H);
+
+    // Top decorative line
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 0.8; ctx.setLineDash([4, 6]);
+    ctx.beginPath(); ctx.moveTo(50, qy + 11); ctx.lineTo(W - 50, qy + 11); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Lotus ornament center
+    ctx.fillStyle = T.accent;
+    ctx.font = '15px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('❧', W / 2, qy + 11);
+
+    // Quote text (with word-wrap for long quotes)
+    const MAX_Q_W = W - 140;
+    ctx.font = '500 19px serif';
+    const qLines = wrapText(ctx, `「${quote}」`, MAX_Q_W);
+    const lineH = 26;
+    const qTextY = qy + QUOTE_H / 2 - (qLines.length - 1) * lineH / 2 - 8;
+    ctx.fillStyle = T.hdrBg;
+    qLines.forEach((line, i) => ctx.fillText(line, W / 2, qTextY + i * lineH));
+
+    // Attribution
+    ctx.fillStyle = T.accent;
+    ctx.font = '600 14px sans-serif';
+    ctx.fillText('—— B.K.S. 艾扬格', W / 2, qy + QUOTE_H - 11);
+
+    // Bottom decorative line
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 0.8; ctx.setLineDash([4, 6]);
+    ctx.beginPath(); ctx.moveTo(50, qy + QUOTE_H - 4); ctx.lineTo(W - 50, qy + QUOTE_H - 4); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // ── Footer ──
+    const fy = HDR_H + DAY_H + timeSlots.length * ROW_H + QUOTE_H;
+    ctx.fillStyle = T.footBg;
+    ctx.fillRect(0, fy, W, BOT_H);
+    // Accent top stripe on footer
+    ctx.fillStyle = T.accent;
+    ctx.fillRect(0, fy, W, 2);
+    ctx.fillStyle = T.footText;
+    ctx.font = '15px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Pure Yoga · Meditation & Wellness', W / 2, fy + BOT_H / 2 + 1);
+
+    // ── Logo ── (uses LOGO_CX / LOGO_CY / LOGO_R defined in header section)
+    const drawLogo = () => {
+      if (window._logoImg) {
+        // Soft glow behind circle for contrast against dark header
+        ctx.fillStyle = 'rgba(255,255,255,0.10)';
+        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R + 5, 0, Math.PI * 2); ctx.fill();
+
+        ctx.save();
+        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R, 0, Math.PI * 2); ctx.clip();
+        ctx.drawImage(window._logoImg, LOGO_CX - LOGO_R, LOGO_CY - LOGO_R, LOGO_R * 2, LOGO_R * 2);
+        ctx.restore();
+
+        ctx.strokeStyle = T.accent;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R + 1, 0, Math.PI * 2); ctx.stroke();
+      } else {
+        // Fallback: draw circle outline + text
+        ctx.strokeStyle = T.accent; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = T.hdrText;
+        ctx.font = 'bold 13px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('PURE', LOGO_CX, LOGO_CY - 8);
+        ctx.fillText('YOGA', LOGO_CX, LOGO_CY + 8);
+      }
+
+      cv.style.width  = '100%';
+      cv.style.height = 'auto';
+      resolve();
+    };
+
+    if (!window._logoImg) {
+      const img = new Image();
+      img.onload = () => { window._logoImg = img; drawLogo(); };
+      img.onerror = drawLogo;
+      img.src = '/logo.png';
+    } else {
+      drawLogo();
+    }
+  });
+}
+
+// Derive all 7 days' dates from the week-range string returned by the AI
+// e.g. "6月8日—6月14日" → {周一:"6/8", 周二:"6/9", ..., 周日:"6/14"}
+function parseDateMapFromWeek(weekStr, titleStr) {
+  const m = (weekStr || '').match(/(\d+)月(\d+)日/);
+  if (!m) return null;
+  const startMonth = parseInt(m[1]);
+  const startDay   = parseInt(m[2]);
+  const yearM = (titleStr || '').match(/(\d{4})年/);
+  const year  = yearM ? parseInt(yearM[1]) : new Date().getFullYear();
+  const monDate = new Date(year, startMonth - 1, startDay);
+  const DAYS = ['周一','周二','周三','周四','周五','周六','周日'];
+  const result = {};
+  DAYS.forEach((label, i) => {
+    const dt = new Date(monDate);
+    dt.setDate(monDate.getDate() + i);
+    result[label] = `${dt.getMonth() + 1}/${dt.getDate()}`;
+  });
+  return result;
+}
+
+function wrapText(ctx, text, maxWidth) {
+  const lines = [];
+  let line = '';
+  for (const ch of text) {
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+function rrFill(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath(); ctx.fill();
+}
+
+function dlImg(){
+  const a = document.createElement('a');
+  a.download = 'PureYoga课表.png';
+  a.href = document.getElementById('cv').toDataURL('image/png');
+  a.click();
+}
+
+function resetAll(){
+  document.getElementById('inst').value = '';
+  document.getElementById('st').textContent = '';
+  document.getElementById('out').style.display = 'none';
+}
+
+function setSt(msg, isErr){
+  const el = document.getElementById('st');
+  el.textContent = msg;
+  el.className = 'status' + (isErr ? ' err' : '');
+}
+</script>
+</body>
+</html>
