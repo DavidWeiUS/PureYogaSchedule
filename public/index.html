@@ -151,10 +151,17 @@
 
   <div class="theme-row">
     <span class="theme-label">风格：</span>
-    <span class="theme-chip active" data-theme="random" onclick="selectTheme('random')">✦ 随机禅意</span>
+    <span class="theme-chip active" data-theme="random" onclick="selectTheme('random')">✦ 随机风格</span>
     <span class="theme-chip" data-theme="0" onclick="selectTheme('0')">墨竹禅意</span>
     <span class="theme-chip" data-theme="1" onclick="selectTheme('1')">茶烟山水</span>
     <span class="theme-chip" data-theme="2" onclick="selectTheme('2')">松月清荷</span>
+    <span class="theme-chip" data-theme="3" onclick="selectTheme('3')">宋式雅集</span>
+    <span class="theme-chip" data-theme="4" onclick="selectTheme('4')">简约现代</span>
+    <span class="theme-chip" data-theme="5" onclick="selectTheme('5')">北欧晨光</span>
+    <span class="theme-chip" data-theme="6" onclick="selectTheme('6')">侘寂物语</span>
+    <span class="theme-chip" data-theme="7" onclick="selectTheme('7')">暗夜金辉</span>
+    <span class="theme-chip" data-theme="8" onclick="selectTheme('8')">莫兰迪灰</span>
+    <span class="theme-chip" data-theme="9" onclick="selectTheme('9')">复古文艺</span>
   </div>
 
   <div class="btn-row">
@@ -180,7 +187,9 @@ const EXAMPLES = [
   '周一9点初级（新同学欢迎），周三晚7点中级，周六10点骨盆修复（需提前告知），周日取消'
 ];
 
-// ── Zen Themes ──
+// ── Themes ── each theme carries both a color palette and a set of
+// structural knobs (radius / grid style / header & quote layout / motif)
+// so that different styles feel genuinely different, not just recolored.
 const THEMES = [
   {
     name: '墨竹禅意',
@@ -203,7 +212,10 @@ const THEMES = [
       { bg:'#EDD8E8', text:'#501A42' },
       { bg:'#E8EDD8', text:'#3A4A1A' },
       { bg:'#D8EDEA', text:'#1A4A44' },
-    ]
+    ],
+    radius: 9, gridW: 0.5, gridDash: [],
+    headerVariant: 'classic', quoteVariant: 'ornate', motif: 'bamboo',
+    titleFont: 'serif'
   },
   {
     name: '茶烟山水',
@@ -226,7 +238,10 @@ const THEMES = [
       { bg:'#D0E0EA', text:'#203858' },
       { bg:'#EAE8D0', text:'#6B5820' },
       { bg:'#D0EAE8', text:'#205856' },
-    ]
+    ],
+    radius: 9, gridW: 0.5, gridDash: [],
+    headerVariant: 'classic', quoteVariant: 'ornate', motif: 'mountain',
+    titleFont: 'serif'
   },
   {
     name: '松月清荷',
@@ -249,7 +264,193 @@ const THEMES = [
       { bg:'#EEEED8', text:'#3A5018' },
       { bg:'#EEE4D8', text:'#50361A' },
       { bg:'#D8EEEC', text:'#184E4C' },
-    ]
+    ],
+    radius: 9, gridW: 0.5, gridDash: [],
+    headerVariant: 'classic', quoteVariant: 'ornate', motif: 'lotus',
+    titleFont: 'serif'
+  },
+  {
+    name: '宋式雅集',
+    bg:       '#F5F1E6',
+    hdrBg:    '#F5F1E6',
+    hdrText:  '#2B2620',
+    accent:   '#7A9B8E',
+    dayBg:    '#E8E0CC',
+    dayText:  '#2B2620',
+    timeBg:   '#FAF7EF',
+    timeText: '#6B5D45',
+    gridLine: '#D8CDB0',
+    rowAlt:   '#FAF7F0',
+    footBg:   '#F5F1E6',
+    footText: '#7A9B8E',
+    classColors: [
+      { bg:'#E3E8DC', text:'#3E4F36' },
+      { bg:'#EAD9CE', text:'#6B4030' },
+      { bg:'#E6E2D8', text:'#4A463C' },
+      { bg:'#F0E4C4', text:'#7A5E1E' },
+      { bg:'#DCE4E2', text:'#33504A' },
+      { bg:'#E8D8DC', text:'#603A44' },
+    ],
+    radius: 2, gridW: 0.5, gridDash: [],
+    headerVariant: 'minimal', quoteVariant: 'seal', motif: 'seal',
+    sealColor: '#B33B2E',
+    titleFont: '"STKaiti","KaiTi",serif'
+  },
+  {
+    name: '简约现代',
+    bg:       '#FAFAFA',
+    hdrBg:    '#181818',
+    hdrText:  '#FFFFFF',
+    accent:   '#4F46E5',
+    dayBg:    '#181818',
+    dayText:  '#FFFFFF',
+    timeBg:   '#F0F0F0',
+    timeText: '#181818',
+    gridLine: '#E4E4E4',
+    rowAlt:   '#F5F5F5',
+    footBg:   '#181818',
+    footText: '#4F46E5',
+    classColors: [
+      { bg:'#EEF2FF', text:'#4F46E5' },
+      { bg:'#FFF1F0', text:'#E5484D' },
+      { bg:'#ECFDF5', text:'#059669' },
+      { bg:'#FFFBEB', text:'#D97706' },
+      { bg:'#F3E8FF', text:'#9333EA' },
+      { bg:'#E0F2FE', text:'#0284C7' },
+    ],
+    radius: 4, gridW: 1, gridDash: [],
+    headerVariant: 'block', quoteVariant: 'plain', motif: 'none',
+    titleFont: '"Segoe UI","PingFang SC",sans-serif'
+  },
+  {
+    name: '北欧晨光',
+    bg:       '#F7F5F2',
+    hdrBg:    '#E8EEF0',
+    hdrText:  '#2E3A3F',
+    accent:   '#8FAE9B',
+    dayBg:    '#DCE8E2',
+    dayText:  '#2E3A3F',
+    timeBg:   '#EFF3F0',
+    timeText: '#4A5B54',
+    gridLine: '#D8E0DC',
+    rowAlt:   '#F2F5F3',
+    footBg:   '#E8EEF0',
+    footText: '#6B8577',
+    classColors: [
+      { bg:'#F4DCD6', text:'#8C4A3D' },
+      { bg:'#DCE8DC', text:'#3E5F42' },
+      { bg:'#F6ECC9', text:'#8A6D1E' },
+      { bg:'#D8E4EC', text:'#345670' },
+      { bg:'#EAD9C9', text:'#7A5230' },
+      { bg:'#E4DCEC', text:'#5A4470' },
+    ],
+    radius: 14, gridW: 0.75, gridDash: [],
+    headerVariant: 'minimal', quoteVariant: 'plain', motif: 'geometric',
+    titleFont: '"Segoe UI",sans-serif'
+  },
+  {
+    name: '侘寂物语',
+    bg:       '#ECE6DA',
+    hdrBg:    '#6B6355',
+    hdrText:  '#F2EDE0',
+    accent:   '#B08968',
+    dayBg:    '#8A8272',
+    dayText:  '#F5F0E4',
+    timeBg:   '#E4DCC8',
+    timeText: '#5C5340',
+    gridLine: '#C9BFA8',
+    rowAlt:   '#F2EDE0',
+    footBg:   '#6B6355',
+    footText: '#C9A96A',
+    classColors: [
+      { bg:'#DCD4C0', text:'#5A5138' },
+      { bg:'#E0CCC0', text:'#6B4A38' },
+      { bg:'#CCD4C4', text:'#465038' },
+      { bg:'#D4C8B4', text:'#5A4A2E' },
+      { bg:'#C8CCC0', text:'#40473A' },
+      { bg:'#D8C8C4', text:'#5A4038' },
+    ],
+    radius: 6, gridW: 0.6, gridDash: [3, 3],
+    headerVariant: 'classic', quoteVariant: 'plain', motif: 'inkblot',
+    titleFont: 'serif'
+  },
+  {
+    name: '暗夜金辉',
+    bg:       '#16140F',
+    hdrBg:    '#0D0C09',
+    hdrText:  '#F0E6C8',
+    accent:   '#C9A54A',
+    dayBg:    '#1F1B14',
+    dayText:  '#E8D9A8',
+    timeBg:   '#201C15',
+    timeText: '#C9A54A',
+    gridLine: '#3A331F',
+    rowAlt:   '#1A1712',
+    footBg:   '#0D0C09',
+    footText: '#C9A54A',
+    classColors: [
+      { bg:'#3A2A14', text:'#E8C878' },
+      { bg:'#2A1F14', text:'#D89860' },
+      { bg:'#1E2A24', text:'#7FBFA0' },
+      { bg:'#241E2A', text:'#B090C8' },
+      { bg:'#2A1E1E', text:'#D08080' },
+      { bg:'#1E242A', text:'#7FA8C8' },
+    ],
+    radius: 3, gridW: 0.5, gridDash: [],
+    headerVariant: 'classic', quoteVariant: 'boxed', motif: 'goldcorner',
+    titleFont: '"Georgia",serif'
+  },
+  {
+    name: '莫兰迪灰',
+    bg:       '#EDE8E4',
+    hdrBg:    '#A8988C',
+    hdrText:  '#F5F0EA',
+    accent:   '#C4A896',
+    dayBg:    '#B8A99C',
+    dayText:  '#F5F0EA',
+    timeBg:   '#E4DDD4',
+    timeText: '#7A6B60',
+    gridLine: '#D4CCC2',
+    rowAlt:   '#F2EEE8',
+    footBg:   '#A8988C',
+    footText: '#F0E4D4',
+    classColors: [
+      { bg:'#D8D4CC', text:'#5A5248' },
+      { bg:'#D0C8CC', text:'#5A4A50' },
+      { bg:'#C8D0C8', text:'#465046' },
+      { bg:'#D4C4B8', text:'#5A4636' },
+      { bg:'#C4CCD0', text:'#3E4A50' },
+      { bg:'#D0C0B4', text:'#5A4032' },
+    ],
+    radius: 10, gridW: 0.5, gridDash: [],
+    headerVariant: 'minimal', quoteVariant: 'plain', motif: 'none',
+    titleFont: 'serif'
+  },
+  {
+    name: '复古文艺',
+    bg:       '#F0E6D2',
+    hdrBg:    '#B33B2E',
+    hdrText:  '#F5EAD2',
+    accent:   '#D9A441',
+    dayBg:    '#2E5C4A',
+    dayText:  '#F5EAD2',
+    timeBg:   '#E8DAB8',
+    timeText: '#6B4A2E',
+    gridLine: '#C9A96A',
+    rowAlt:   '#F5EAD2',
+    footBg:   '#B33B2E',
+    footText: '#F0D080',
+    classColors: [
+      { bg:'#E8D080', text:'#6B4A10' },
+      { bg:'#E0C0B8', text:'#8C3A28' },
+      { bg:'#C8DCD0', text:'#1E5040' },
+      { bg:'#D4D8B0', text:'#4A5020' },
+      { bg:'#C0CCDC', text:'#243A5C' },
+      { bg:'#DCC4B4', text:'#6B3A20' },
+    ],
+    radius: 4, gridW: 1.2, gridDash: [],
+    headerVariant: 'block', quoteVariant: 'boxed', motif: 'doubleline',
+    titleFont: '"Arial Black","Microsoft YaHei",sans-serif'
   }
 ];
 
@@ -274,6 +475,311 @@ const QUOTES = [
   '觉知即是瑜伽，瑜伽即是合一。',
   '身体是有限的，但通过练习，你可以触碰无限。',
 ];
+
+// ── Shared logo placement (set by whichever header variant renders,
+// read by drawLogo() inside renderCanvas) ──
+let logoCx, logoCy, logoR, logoShape;
+
+function titleParts(d) {
+  const m = (d.title || '').match(/^(.+年.+月)\s*(第.+)$/);
+  return { ym: m ? m[1] : (d.title || d.week), wk: m ? m[2] : '' };
+}
+
+// ── Header variants ──
+function drawHeaderClassic(ctx, T, W, HDR_H, d) {
+  ctx.fillStyle = T.hdrBg;
+  ctx.fillRect(0, 0, W, HDR_H);
+  ctx.fillStyle = T.accent;
+  ctx.fillRect(0, HDR_H - 3, W, 3);
+
+  logoCx = 58; logoCy = HDR_H / 2; logoR = 42; logoShape = 'circle';
+  const STUDIO_X = logoCx + logoR + 16;
+  const DIV_X = 310;
+
+  ctx.fillStyle = T.hdrText;
+  ctx.font = `bold 23px ${T.titleFont || 'serif'}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('PURE YOGA', STUDIO_X, HDR_H / 2 - 12);
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '12px sans-serif';
+  ctx.fillText('MEDITATION  &  WELLNESS', STUDIO_X, HDR_H / 2 + 14);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.20)';
+  ctx.fillRect(DIV_X, 14, 1, HDR_H - 28);
+
+  const { ym, wk } = titleParts(d);
+  const titleX = DIV_X + (W - DIV_X) / 2;
+
+  ctx.textBaseline = 'middle';
+  ctx.font = `bold 30px ${T.titleFont || 'serif'}`;
+  const GAP = 35;
+  const ymW = ctx.measureText(ym).width;
+  const wkW = ctx.measureText(wk || ym).width;
+  const lineW = ymW + GAP + wkW;
+  const lineX = titleX - lineW / 2;
+
+  ctx.fillStyle = T.hdrText;
+  ctx.textAlign = 'left';
+  ctx.fillText(ym, lineX, HDR_H / 2 - 10);
+  ctx.fillText(wk || ym, lineX + ymW + GAP, HDR_H / 2 - 10);
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 14px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(d.week, titleX, HDR_H / 2 + 18);
+
+  drawMotif(ctx, T, W, HDR_H);
+}
+
+function drawHeaderMinimal(ctx, T, W, HDR_H, d) {
+  ctx.fillStyle = T.hdrBg;
+  ctx.fillRect(0, 0, W, HDR_H);
+
+  ctx.strokeStyle = T.accent;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, 4); ctx.lineTo(W, 4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, HDR_H - 4); ctx.lineTo(W, HDR_H - 4); ctx.stroke();
+
+  logoCx = W / 2; logoCy = 34; logoR = 24; logoShape = 'circle';
+
+  ctx.fillStyle = T.hdrText;
+  ctx.font = `bold 15px ${T.titleFont || 'serif'}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('PURE YOGA · MEDITATION & WELLNESS', W / 2, logoCy + logoR + 16);
+
+  const { ym, wk } = titleParts(d);
+  ctx.font = `bold 26px ${T.titleFont || 'serif'}`;
+  ctx.fillText(wk ? `${ym}  ${wk}` : ym, W / 2, HDR_H - 34);
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 13px sans-serif';
+  ctx.fillText(d.week, W / 2, HDR_H - 14);
+
+  drawMotif(ctx, T, W, HDR_H);
+}
+
+function drawHeaderBlock(ctx, T, W, HDR_H, d) {
+  const BAR = 8;
+  ctx.fillStyle = T.accent;
+  ctx.fillRect(0, 0, W, BAR);
+  ctx.fillStyle = T.hdrBg;
+  ctx.fillRect(0, BAR, W, HDR_H - BAR);
+
+  logoCx = 54; logoCy = BAR + (HDR_H - BAR) / 2; logoR = 34; logoShape = 'square';
+  const STUDIO_X = logoCx + logoR + 20;
+
+  ctx.fillStyle = T.hdrText;
+  ctx.font = `900 20px ${T.titleFont || 'sans-serif'}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('PURE YOGA', STUDIO_X, logoCy - 14);
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 11px sans-serif';
+  ctx.fillText('MEDITATION  &  WELLNESS', STUDIO_X, logoCy + 10);
+
+  const { ym, wk } = titleParts(d);
+  ctx.textAlign = 'right';
+  ctx.font = `900 24px ${T.titleFont || 'sans-serif'}`;
+  ctx.fillStyle = T.hdrText;
+  ctx.fillText(wk ? `${ym} ${wk}` : ym, W - 40, logoCy - 12);
+
+  ctx.font = '600 13px sans-serif';
+  ctx.fillStyle = T.accent;
+  ctx.fillText(d.week, W - 40, logoCy + 14);
+
+  drawMotif(ctx, T, W, HDR_H);
+}
+
+function drawHeader(ctx, T, W, HDR_H, d) {
+  const v = T.headerVariant || 'classic';
+  if (v === 'minimal') drawHeaderMinimal(ctx, T, W, HDR_H, d);
+  else if (v === 'block') drawHeaderBlock(ctx, T, W, HDR_H, d);
+  else drawHeaderClassic(ctx, T, W, HDR_H, d);
+}
+
+// ── Decorative motifs (subtle, drawn within the header) ──
+function drawMotif(ctx, T, W, HDR_H) {
+  const key = T.motif || 'none';
+  if (key === 'none') return;
+  ctx.save();
+  if (key === 'bamboo') {
+    ctx.globalAlpha = 0.16;
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    for (let i = 0; i < 3; i++) {
+      const x = W - 70 + i * 16;
+      ctx.beginPath(); ctx.moveTo(x, 12); ctx.lineTo(x, HDR_H - 12); ctx.stroke();
+      for (let y = 24; y < HDR_H - 12; y += 26) {
+        ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.stroke();
+      }
+    }
+  } else if (key === 'mountain') {
+    ctx.globalAlpha = 0.14;
+    ctx.fillStyle = T.accent;
+    ctx.beginPath();
+    ctx.moveTo(W - 160, HDR_H); ctx.lineTo(W - 120, HDR_H - 38); ctx.lineTo(W - 90, HDR_H - 14);
+    ctx.lineTo(W - 55, HDR_H - 46); ctx.lineTo(W - 20, HDR_H); ctx.closePath(); ctx.fill();
+  } else if (key === 'lotus') {
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = T.accent;
+    const cx = W - 60, cy = HDR_H / 2;
+    for (let i = 0; i < 5; i++) {
+      const ang = (i / 5) * Math.PI * 2 - Math.PI / 2;
+      ctx.beginPath();
+      ctx.ellipse(cx + Math.cos(ang) * 16, cy + Math.sin(ang) * 16, 12, 6, ang, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else if (key === 'geometric') {
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(60, HDR_H / 2, 9, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(W - 60, HDR_H / 2 - 9); ctx.lineTo(W - 51, HDR_H / 2 + 9); ctx.lineTo(W - 69, HDR_H / 2 + 9);
+    ctx.closePath(); ctx.stroke();
+  } else if (key === 'inkblot') {
+    ctx.globalAlpha = 0.12;
+    ctx.fillStyle = T.accent;
+    ctx.beginPath();
+    ctx.moveTo(W - 40, 20);
+    ctx.bezierCurveTo(W - 10, 10, W - 5, 50, W - 30, 60);
+    ctx.bezierCurveTo(W - 55, 70, W - 60, 30, W - 40, 20);
+    ctx.closePath(); ctx.fill();
+  } else if (key === 'goldcorner') {
+    ctx.globalAlpha = 0.85;
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 1.2;
+    const m = 14, len = 22;
+    ctx.beginPath(); ctx.moveTo(W - m - len, m); ctx.lineTo(W - m, m); ctx.lineTo(W - m, m + len); ctx.stroke();
+  } else if (key === 'doubleline') {
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(30, HDR_H - 16); ctx.lineTo(W - 30, HDR_H - 16); ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(30, HDR_H - 11); ctx.lineTo(W - 30, HDR_H - 11); ctx.stroke();
+  } else if (key === 'seal') {
+    const s = 32, sx = W - 66, sy = HDR_H - 46;
+    ctx.globalAlpha = 0.92;
+    ctx.fillStyle = T.sealColor || '#B33B2E';
+    rrFill(ctx, sx, sy, s, s, 3);
+    ctx.fillStyle = '#F5EAD8';
+    ctx.font = 'bold 15px serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('純', sx + s / 2, sy + s / 2);
+  }
+  ctx.restore();
+}
+
+// ── Quote section variants ──
+function drawQuoteOrnate(ctx, T, W, qy, QUOTE_H, quote) {
+  ctx.fillStyle = T.timeBg;
+  ctx.fillRect(0, qy, W, QUOTE_H);
+
+  ctx.strokeStyle = T.accent; ctx.lineWidth = 0.8; ctx.setLineDash([4, 6]);
+  ctx.beginPath(); ctx.moveTo(50, qy + 11); ctx.lineTo(W - 50, qy + 11); ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '15px serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('❧', W / 2, qy + 11);
+
+  const MAX_Q_W = W - 140;
+  ctx.font = '500 19px serif';
+  const qLines = wrapText(ctx, `「${quote}」`, MAX_Q_W);
+  const lineH = 26;
+  const qTextY = qy + QUOTE_H / 2 - (qLines.length - 1) * lineH / 2 - 8;
+  ctx.fillStyle = T.timeText;
+  qLines.forEach((line, i) => ctx.fillText(line, W / 2, qTextY + i * lineH));
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 14px sans-serif';
+  ctx.fillText('—— B.K.S. 艾扬格', W / 2, qy + QUOTE_H - 11);
+
+  ctx.strokeStyle = T.accent; ctx.lineWidth = 0.8; ctx.setLineDash([4, 6]);
+  ctx.beginPath(); ctx.moveTo(50, qy + QUOTE_H - 4); ctx.lineTo(W - 50, qy + QUOTE_H - 4); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawQuotePlain(ctx, T, W, qy, QUOTE_H, quote) {
+  ctx.fillStyle = T.timeBg;
+  ctx.fillRect(0, qy, W, QUOTE_H);
+
+  const MAX_Q_W = W - 160;
+  ctx.font = 'italic 500 18px serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const qLines = wrapText(ctx, quote, MAX_Q_W);
+  const lineH = 25;
+  const qTextY = qy + QUOTE_H / 2 - (qLines.length - 1) * lineH / 2 - 6;
+  ctx.fillStyle = T.timeText;
+  qLines.forEach((line, i) => ctx.fillText(line, W / 2, qTextY + i * lineH));
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 13px sans-serif';
+  ctx.fillText('B.K.S. 艾扬格', W / 2, qy + QUOTE_H - 13);
+}
+
+function drawQuoteSeal(ctx, T, W, qy, QUOTE_H, quote) {
+  ctx.fillStyle = T.timeBg;
+  ctx.fillRect(0, qy, W, QUOTE_H);
+
+  const lineX = 66;
+  ctx.strokeStyle = T.accent; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(lineX, qy + 14); ctx.lineTo(lineX, qy + QUOTE_H - 14); ctx.stroke();
+
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  const textX = lineX + 22;
+  const MAX_Q_W = W - textX - 110;
+  ctx.font = '500 17px "STKaiti","KaiTi",serif';
+  const qLines = wrapText(ctx, `「${quote}」`, MAX_Q_W);
+  const lineH = 23;
+  const blockH = qLines.length * lineH + 20;
+  const qTextY = qy + QUOTE_H / 2 - blockH / 2 + lineH / 2;
+  ctx.fillStyle = T.timeText;
+  qLines.forEach((line, i) => ctx.fillText(line, textX, qTextY + i * lineH));
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 12px sans-serif';
+  ctx.fillText('—— B.K.S. 艾扬格', textX, qTextY + qLines.length * lineH + 6);
+
+  const s = 38, sx = W - 88, sy = qy + QUOTE_H / 2 - s / 2;
+  ctx.fillStyle = T.sealColor || '#B33B2E';
+  rrFill(ctx, sx, sy, s, s, 4);
+  ctx.fillStyle = '#F5EAD8';
+  ctx.font = 'bold 15px serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('禅', sx + s / 2, sy + s / 2);
+}
+
+function drawQuoteBoxed(ctx, T, W, qy, QUOTE_H, quote) {
+  ctx.fillStyle = T.timeBg;
+  ctx.fillRect(0, qy, W, QUOTE_H);
+
+  const bx = 46, by = qy + 12, bw = W - 92, bh = QUOTE_H - 24;
+  ctx.strokeStyle = T.accent; ctx.lineWidth = 1.3;
+  ctx.strokeRect(bx, by, bw, bh);
+
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const MAX_Q_W = bw - 60;
+  ctx.font = '500 18px serif';
+  const qLines = wrapText(ctx, `「${quote}」`, MAX_Q_W);
+  const lineH = 25;
+  const qTextY = qy + QUOTE_H / 2 - (qLines.length - 1) * lineH / 2 - 8;
+  ctx.fillStyle = T.timeText;
+  qLines.forEach((line, i) => ctx.fillText(line, W / 2, qTextY + i * lineH));
+
+  ctx.fillStyle = T.accent;
+  ctx.font = '600 13px sans-serif';
+  ctx.fillText('—— B.K.S. 艾扬格', W / 2, qy + QUOTE_H - 22);
+}
+
+function drawQuoteSection(ctx, T, W, qy, QUOTE_H, quote) {
+  const v = T.quoteVariant || 'ornate';
+  if (v === 'plain') drawQuotePlain(ctx, T, W, qy, QUOTE_H, quote);
+  else if (v === 'seal') drawQuoteSeal(ctx, T, W, qy, QUOTE_H, quote);
+  else if (v === 'boxed') drawQuoteBoxed(ctx, T, W, qy, QUOTE_H, quote);
+  else drawQuoteOrnate(ctx, T, W, qy, QUOTE_H, quote);
+}
 
 let selectedTheme = 'random';
 
@@ -409,61 +915,8 @@ function renderCanvas(d, themeIdx, dates) {
     ctx.fillStyle = T.bg;
     ctx.fillRect(0, 0, W, H);
 
-    // Logo + studio name layout constants (used here and in drawLogo)
-    const LOGO_CX = 58, LOGO_CY = HDR_H / 2, LOGO_R = 42;
-    const STUDIO_X = LOGO_CX + LOGO_R + 16;  // text starts right of circle ≈ 116
-    const DIV_X    = 310;                      // divider separating name from title
-
-    // ── Header — full width, unified bg ──
-    ctx.fillStyle = T.hdrBg;
-    ctx.fillRect(0, 0, W, HDR_H);
-
-    // Accent bottom stripe
-    ctx.fillStyle = T.accent;
-    ctx.fillRect(0, HDR_H - 3, W, 3);
-
-    // Studio name — drawn before logo (logo circle draws on top, no overlap since text is right of circle)
-    ctx.fillStyle = T.hdrText;
-    ctx.font = 'bold 23px serif';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('PURE YOGA', STUDIO_X, HDR_H / 2 - 12);
-
-    ctx.fillStyle = T.accent;
-    ctx.font = '12px sans-serif';
-    ctx.fillText('MEDITATION  &  WELLNESS', STUDIO_X, HDR_H / 2 + 14);
-
-    // Divider between studio name zone and title zone
-    ctx.fillStyle = 'rgba(255,255,255,0.20)';
-    ctx.fillRect(DIV_X, 14, 1, HDR_H - 28);
-
-    // Schedule title (right half)
-    const titleX = DIV_X + (W - DIV_X) / 2;
-    // Split title into year/month + week-type, rendered on the same line with a wider gap
-    const titleMatch = (d.title || '').match(/^(.+年.+月)\s*(第.+)$/);
-    const ymStr = titleMatch ? titleMatch[1] : (d.title || d.week);
-    const wkStr = titleMatch ? titleMatch[2] : '';
-
-    ctx.textBaseline = 'middle';
-    ctx.font = 'bold 30px serif';
-
-    // Measure both parts so we can center the combined line
-    const GAP  = 35;   // extra spacing between "年月" and "第X周…"
-    const ymW  = ctx.measureText(ymStr).width;
-    const wkW  = ctx.measureText(wkStr || ymStr).width;
-    const lineW = ymW + GAP + wkW;
-    const lineX = titleX - lineW / 2;   // left edge of combined line
-
-    ctx.fillStyle = T.hdrText;
-    ctx.textAlign = 'left';
-    ctx.fillText(ymStr,          lineX,         HDR_H / 2 - 10);
-    ctx.fillText(wkStr || ymStr, lineX + ymW + GAP, HDR_H / 2 - 10);
-
-    // Date range — small accent line below
-    ctx.fillStyle = T.accent;
-    ctx.font = '600 14px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(d.week, titleX, HDR_H / 2 + 18);
+    // ── Header — layout & decoration vary per theme (see drawHeader) ──
+    drawHeader(ctx, T, W, HDR_H, d);
 
     // ── Day-header row ──
     ctx.fillStyle = T.dayBg;
@@ -480,7 +933,7 @@ function renderCanvas(d, themeIdx, dates) {
     DAYS.forEach((day, i) => {
       const x = TIME_W + i * COL_W;
       if (i > 0) {
-        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillStyle = hexAlpha(T.dayText, 0.22);
         ctx.fillRect(x, HDR_H, 1, DAY_H);
       }
       ctx.fillStyle = T.dayText;
@@ -488,7 +941,7 @@ function renderCanvas(d, themeIdx, dates) {
       ctx.textBaseline = 'middle';
       ctx.fillText(day, x + COL_W / 2, HDR_H + 24);
       ctx.font = '14px sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.80)';
+      ctx.fillStyle = hexAlpha(T.dayText, 0.75);
       ctx.fillText((dateMap[day] || '').replace('/', '.'), x + COL_W / 2, HDR_H + 46);
     });
 
@@ -530,7 +983,7 @@ function renderCanvas(d, themeIdx, dates) {
           const col = typeColorMap[cls.type] || T.classColors[0];
           const PAD = 8;
           ctx.fillStyle = col.bg;
-          rrFill(ctx, cx + PAD, ry + PAD, COL_W - PAD * 2, ROW_H - PAD * 2, 9);
+          rrFill(ctx, cx + PAD, ry + PAD, COL_W - PAD * 2, ROW_H - PAD * 2, T.radius != null ? T.radius : 9);
 
           ctx.fillStyle = col.text;
           ctx.textAlign = 'center';
@@ -554,51 +1007,23 @@ function renderCanvas(d, themeIdx, dates) {
         }
 
         ctx.strokeStyle = T.gridLine;
-        ctx.lineWidth = 0.5;
+        ctx.lineWidth = T.gridW != null ? T.gridW : 0.5;
+        ctx.setLineDash(T.gridDash || []);
         ctx.strokeRect(cx + 0.25, ry + 0.25, COL_W - 0.5, ROW_H - 0.5);
+        ctx.setLineDash([]);
       });
 
       // Time cell border
       ctx.strokeStyle = T.gridLine;
-      ctx.lineWidth = 0.5;
+      ctx.lineWidth = T.gridW != null ? T.gridW : 0.5;
+      ctx.setLineDash(T.gridDash || []);
       ctx.strokeRect(0.25, ry + 0.25, TIME_W - 0.5, ROW_H - 0.5);
+      ctx.setLineDash([]);
     });
 
-    // ── Quote section ──
+    // ── Quote section — layout & decoration vary per theme ──
     const qy = HDR_H + DAY_H + timeSlots.length * ROW_H;
-    ctx.fillStyle = T.timeBg;
-    ctx.fillRect(0, qy, W, QUOTE_H);
-
-    // Top decorative line
-    ctx.strokeStyle = T.accent; ctx.lineWidth = 0.8; ctx.setLineDash([4, 6]);
-    ctx.beginPath(); ctx.moveTo(50, qy + 11); ctx.lineTo(W - 50, qy + 11); ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Lotus ornament center
-    ctx.fillStyle = T.accent;
-    ctx.font = '15px serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('❧', W / 2, qy + 11);
-
-    // Quote text (with word-wrap for long quotes)
-    const MAX_Q_W = W - 140;
-    ctx.font = '500 19px serif';
-    const qLines = wrapText(ctx, `「${quote}」`, MAX_Q_W);
-    const lineH = 26;
-    const qTextY = qy + QUOTE_H / 2 - (qLines.length - 1) * lineH / 2 - 8;
-    ctx.fillStyle = T.hdrBg;
-    qLines.forEach((line, i) => ctx.fillText(line, W / 2, qTextY + i * lineH));
-
-    // Attribution
-    ctx.fillStyle = T.accent;
-    ctx.font = '600 14px sans-serif';
-    ctx.fillText('—— B.K.S. 艾扬格', W / 2, qy + QUOTE_H - 11);
-
-    // Bottom decorative line
-    ctx.strokeStyle = T.accent; ctx.lineWidth = 0.8; ctx.setLineDash([4, 6]);
-    ctx.beginPath(); ctx.moveTo(50, qy + QUOTE_H - 4); ctx.lineTo(W - 50, qy + QUOTE_H - 4); ctx.stroke();
-    ctx.setLineDash([]);
+    drawQuoteSection(ctx, T, W, qy, QUOTE_H, quote);
 
     // ── Footer ──
     const fy = HDR_H + DAY_H + timeSlots.length * ROW_H + QUOTE_H;
@@ -613,31 +1038,47 @@ function renderCanvas(d, themeIdx, dates) {
     ctx.textBaseline = 'middle';
     ctx.fillText('Pure Yoga · Meditation & Wellness', W / 2, fy + BOT_H / 2 + 1);
 
-    // ── Logo ── (uses LOGO_CX / LOGO_CY / LOGO_R defined in header section)
+    // ── Logo ── (uses logoCx / logoCy / logoR / logoShape set by drawHeader*)
+    const logoPath = (r) => {
+      ctx.beginPath();
+      if (logoShape === 'square') {
+        const rad = 8, x = logoCx - r, y = logoCy - r, s = r * 2;
+        ctx.moveTo(x + rad, y); ctx.lineTo(x + s - rad, y); ctx.quadraticCurveTo(x + s, y, x + s, y + rad);
+        ctx.lineTo(x + s, y + s - rad); ctx.quadraticCurveTo(x + s, y + s, x + s - rad, y + s);
+        ctx.lineTo(x + rad, y + s); ctx.quadraticCurveTo(x, y + s, x, y + s - rad);
+        ctx.lineTo(x, y + rad); ctx.quadraticCurveTo(x, y, x + rad, y);
+        ctx.closePath();
+      } else {
+        ctx.arc(logoCx, logoCy, r, 0, Math.PI * 2);
+      }
+    };
+
     const drawLogo = () => {
       if (window._logoImg) {
-        // Soft glow behind circle for contrast against dark header
-        ctx.fillStyle = 'rgba(255,255,255,0.10)';
-        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R + 5, 0, Math.PI * 2); ctx.fill();
+        if (logoShape === 'circle') {
+          // Soft glow behind circle for contrast against dark header
+          ctx.fillStyle = 'rgba(255,255,255,0.10)';
+          logoPath(logoR + 5); ctx.fill();
+        }
 
         ctx.save();
-        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R, 0, Math.PI * 2); ctx.clip();
-        ctx.drawImage(window._logoImg, LOGO_CX - LOGO_R, LOGO_CY - LOGO_R, LOGO_R * 2, LOGO_R * 2);
+        logoPath(logoR); ctx.clip();
+        ctx.drawImage(window._logoImg, logoCx - logoR, logoCy - logoR, logoR * 2, logoR * 2);
         ctx.restore();
 
         ctx.strokeStyle = T.accent;
         ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R + 1, 0, Math.PI * 2); ctx.stroke();
+        logoPath(logoR); ctx.stroke();
       } else {
-        // Fallback: draw circle outline + text
+        // Fallback: draw outline + text
         ctx.strokeStyle = T.accent; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(LOGO_CX, LOGO_CY, LOGO_R, 0, Math.PI * 2); ctx.stroke();
+        logoPath(logoR); ctx.stroke();
         ctx.fillStyle = T.hdrText;
-        ctx.font = 'bold 13px serif';
+        ctx.font = `bold 13px ${T.titleFont || 'serif'}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('PURE', LOGO_CX, LOGO_CY - 8);
-        ctx.fillText('YOGA', LOGO_CX, LOGO_CY + 8);
+        ctx.fillText('PURE', logoCx, logoCy - 8);
+        ctx.fillText('YOGA', logoCx, logoCy + 8);
       }
 
       cv.style.width  = '100%';
@@ -654,6 +1095,17 @@ function renderCanvas(d, themeIdx, dates) {
       drawLogo();
     }
   });
+}
+
+// Convert a "#RRGGBB" hex color to an rgba() string at the given alpha —
+// used so header/day-row overlays (dividers, sub-labels) stay visible
+// whether a theme's header is light or dark.
+function hexAlpha(hex, alpha) {
+  const h = (hex || '#000000').replace('#', '');
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 // Derive all 7 days' dates from the week-range string returned by the AI
