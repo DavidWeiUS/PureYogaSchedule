@@ -284,14 +284,14 @@ const THEMES = [
     footBg:   '#F5F1E6',
     footText: '#7A9B8E',
     classColors: [
-      { bg:'#E3E8DC', text:'#3E4F36' },
-      { bg:'#EAD9CE', text:'#6B4030' },
-      { bg:'#E6E2D8', text:'#4A463C' },
-      { bg:'#F0E4C4', text:'#7A5E1E' },
-      { bg:'#DCE4E2', text:'#33504A' },
-      { bg:'#E8D8DC', text:'#603A44' },
+      { accent:'#7E9E82', bg:'#EEF1E7', text:'#3A4A38' },
+      { accent:'#B4744F', bg:'#F4E9E0', text:'#5E3A28' },
+      { accent:'#6B6459', bg:'#EDEBE5', text:'#3A3934' },
+      { accent:'#BE9A4E', bg:'#F5EFDC', text:'#5C4A1E' },
+      { accent:'#5E8283', bg:'#E7EFEE', text:'#2E4A48' },
+      { accent:'#8C6478', bg:'#F1E8EC', text:'#4A3440' },
     ],
-    radius: 2, gridW: 0.5, gridDash: [],
+    radius: 3, gridW: 0.5, gridDash: [], chipStyle: 'tag',
     headerVariant: 'minimal', quoteVariant: 'seal', motif: 'seal',
     sealColor: '#B33B2E',
     titleFont: '"STKaiti","KaiTi",serif'
@@ -311,14 +311,14 @@ const THEMES = [
     footBg:   '#16213E',
     footText: '#4F46E5',
     classColors: [
-      { bg:'#EEF2FF', text:'#4F46E5' },
-      { bg:'#FFF1F0', text:'#E5484D' },
-      { bg:'#ECFDF5', text:'#059669' },
-      { bg:'#FFFBEB', text:'#D97706' },
-      { bg:'#F3E8FF', text:'#9333EA' },
-      { bg:'#E0F2FE', text:'#0284C7' },
+      { accent:'#4F46E5', bg:'#EEEDFB', text:'#3730A5' },
+      { accent:'#0F766E', bg:'#E9F5F3', text:'#0B4F49' },
+      { accent:'#B45309', bg:'#FBF0E4', text:'#7C3D0A' },
+      { accent:'#9F1239', bg:'#FAEAEE', text:'#7A0E2E' },
+      { accent:'#475569', bg:'#EEF0F2', text:'#334155' },
+      { accent:'#6D28D9', bg:'#F1EAFB', text:'#4C1D8C' },
     ],
-    radius: 4, gridW: 1, gridDash: [],
+    radius: 4, gridW: 1, gridDash: [], chipStyle: 'tag', headerBar: 5,
     headerVariant: 'block', quoteVariant: 'plain', motif: 'none',
     titleFont: '"Segoe UI","PingFang SC",sans-serif'
   },
@@ -337,14 +337,14 @@ const THEMES = [
     footBg:   '#E8EEF0',
     footText: '#6B8577',
     classColors: [
-      { bg:'#F4DCD6', text:'#8C4A3D' },
-      { bg:'#DCE8DC', text:'#3E5F42' },
-      { bg:'#F6ECC9', text:'#8A6D1E' },
-      { bg:'#D8E4EC', text:'#345670' },
-      { bg:'#EAD9C9', text:'#7A5230' },
-      { bg:'#E4DCEC', text:'#5A4470' },
+      { accent:'#7C93A8', bg:'#EEF1F3', text:'#3E5164' },
+      { accent:'#7C9473', bg:'#EEF2EC', text:'#3F5138' },
+      { accent:'#B89968', bg:'#F5F0E4', text:'#6B5430' },
+      { accent:'#B57C63', bg:'#F5EAE4', text:'#6B4230' },
+      { accent:'#8B8579', bg:'#F0EFEB', text:'#4A473E' },
+      { accent:'#8C7691', bg:'#F2EEF3', text:'#4E3E54' },
     ],
-    radius: 14, gridW: 0.75, gridDash: [],
+    radius: 14, gridW: 0.75, gridDash: [], chipStyle: 'tag',
     headerVariant: 'minimal', quoteVariant: 'plain', motif: 'geometric',
     titleFont: '"Segoe UI",sans-serif'
   },
@@ -363,14 +363,14 @@ const THEMES = [
     footBg:   '#6B6355',
     footText: '#C9A96A',
     classColors: [
-      { bg:'#DCD4C0', text:'#5A5138' },
-      { bg:'#E0CCC0', text:'#6B4A38' },
-      { bg:'#CCD4C4', text:'#465038' },
-      { bg:'#D4C8B4', text:'#5A4A2E' },
-      { bg:'#C8CCC0', text:'#40473A' },
-      { bg:'#D8C8C4', text:'#5A4038' },
+      { accent:'#B08968', bg:'#EFE8DC', text:'#5C4530' },
+      { accent:'#7C8560', bg:'#E9ECDF', text:'#3E4530' },
+      { accent:'#8A8272', bg:'#EAE7DE', text:'#454235' },
+      { accent:'#A8664A', bg:'#F0E3DC', text:'#5C3424' },
+      { accent:'#6B5A48', bg:'#E8E2D6', text:'#3A3024' },
+      { accent:'#7A7568', bg:'#E9E7E0', text:'#3E3C34' },
     ],
-    radius: 6, gridW: 0.6, gridDash: [3, 3],
+    radius: 6, gridW: 0.6, gridDash: [], chipStyle: 'tag',
     headerVariant: 'classic', quoteVariant: 'plain', motif: 'inkblot',
     titleFont: 'serif'
   },
@@ -390,13 +390,13 @@ const THEMES = [
     footText: '#C9A54A',
     classColors: [
       { bg:'#453420', text:'#F0D080' },
-      { bg:'#372A1C', text:'#E0A070' },
-      { bg:'#2A362F', text:'#8FCFB0' },
-      { bg:'#302A36', text:'#C0A0D8' },
-      { bg:'#362A2A', text:'#E09090' },
-      { bg:'#2A3036', text:'#8FB8D8' },
+      { bg:'#3E2E18', text:'#E8B860' },
+      { bg:'#362A1C', text:'#D4A468' },
+      { bg:'#3A2A20', text:'#E0A878' },
+      { bg:'#3A3424', text:'#E8D8A0' },
+      { bg:'#332C1C', text:'#D8C078' },
     ],
-    radius: 3, gridW: 0.5, gridDash: [],
+    radius: 3, gridW: 0.5, gridDash: [], chipStyle: 'solid',
     headerVariant: 'classic', quoteVariant: 'boxed', motif: 'goldcorner',
     titleFont: '"Georgia",serif'
   },
@@ -415,14 +415,14 @@ const THEMES = [
     footBg:   '#A8988C',
     footText: '#F0E4D4',
     classColors: [
-      { bg:'#D8D4CC', text:'#5A5248' },
-      { bg:'#D0C8CC', text:'#5A4A50' },
-      { bg:'#C8D0C8', text:'#465046' },
-      { bg:'#D4C4B8', text:'#5A4636' },
-      { bg:'#C4CCD0', text:'#3E4A50' },
-      { bg:'#D0C0B4', text:'#5A4032' },
+      { accent:'#7D93A0', bg:'#E4E8EA', text:'#3E4E56' },
+      { accent:'#9E8088', bg:'#EAE4E6', text:'#5A424A' },
+      { accent:'#7E9080', bg:'#E6EAE6', text:'#3E4C40' },
+      { accent:'#A08868', bg:'#EDE6DC', text:'#5A4632' },
+      { accent:'#6E7C88', bg:'#E4E8EA', text:'#384652' },
+      { accent:'#A87860', bg:'#EDE2DA', text:'#5A3E30' },
     ],
-    radius: 10, gridW: 0.5, gridDash: [],
+    radius: 10, gridW: 0.5, gridDash: [], chipStyle: 'tag',
     headerVariant: 'minimal', quoteVariant: 'plain', motif: 'none',
     titleFont: 'serif'
   },
@@ -441,14 +441,14 @@ const THEMES = [
     footBg:   '#7A2A34',
     footText: '#F0D080',
     classColors: [
-      { bg:'#E8D080', text:'#6B4A10' },
-      { bg:'#E0C0B8', text:'#8C3A28' },
-      { bg:'#C8DCD0', text:'#1E5040' },
-      { bg:'#D4D8B0', text:'#4A5020' },
-      { bg:'#C0CCDC', text:'#243A5C' },
-      { bg:'#DCC4B4', text:'#6B3A20' },
+      { bg:'#7A2A34', text:'#F3E4D0' },
+      { bg:'#C08A2E', text:'#3A2A10' },
+      { bg:'#2E5C4A', text:'#EFE4CC' },
+      { bg:'#A85A34', text:'#F3E4D0' },
+      { bg:'#6B6B2E', text:'#F3EFD0' },
+      { bg:'#33465C', text:'#EFE4CC' },
     ],
-    radius: 4, gridW: 1.2, gridDash: [],
+    radius: 4, gridW: 1.2, gridDash: [], chipStyle: 'solid',
     headerVariant: 'block', quoteVariant: 'boxed', motif: 'doubleline',
     titleFont: '"Arial Black","Microsoft YaHei",sans-serif'
   }
@@ -562,7 +562,7 @@ function drawHeaderMinimal(ctx, T, W, HDR_H, d) {
 }
 
 function drawHeaderBlock(ctx, T, W, HDR_H, d) {
-  const BAR = 8;
+  const BAR = T.headerBar != null ? T.headerBar : 8;
   ctx.fillStyle = T.accent;
   ctx.fillRect(0, 0, W, BAR);
   ctx.fillStyle = T.hdrBg;
@@ -982,8 +982,30 @@ function renderCanvas(d, themeIdx, dates) {
         if (cls) {
           const col = typeColorMap[cls.type] || T.classColors[0];
           const PAD = 8;
+          const R = T.radius != null ? T.radius : 9;
+          const cardX = cx + PAD, cardY = ry + PAD, cardW = COL_W - PAD * 2, cardH = ROW_H - PAD * 2;
+
           ctx.fillStyle = col.bg;
-          rrFill(ctx, cx + PAD, ry + PAD, COL_W - PAD * 2, ROW_H - PAD * 2, T.radius != null ? T.radius : 9);
+          rrFill(ctx, cardX, cardY, cardW, cardH, R);
+
+          // "tag" chip style: neutral card + a slim colored accent bar on the
+          // left (like a calendar-app tag) instead of a fully saturated block —
+          // used by the more restrained/minimal themes. A faint accent-colored
+          // outline keeps the card legible against light, low-contrast pages.
+          let textCX = cx + COL_W / 2;
+          if (T.chipStyle === 'tag' && col.accent) {
+            ctx.strokeStyle = col.accent;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.28;
+            rrStroke(ctx, cardX + 0.5, cardY + 0.5, cardW - 1, cardH - 1, R);
+            ctx.globalAlpha = 1;
+
+            const barW = 3, barInset = 7;
+            ctx.fillStyle = col.accent;
+            rrFill(ctx, cardX + barInset, cardY + 7, barW, cardH - 14, barW / 2);
+            const contentX0 = cardX + barInset + barW + 6, contentX1 = cardX + cardW - 6;
+            textCX = (contentX0 + contentX1) / 2;
+          }
 
           ctx.fillStyle = col.text;
           ctx.textAlign = 'center';
@@ -992,17 +1014,17 @@ function renderCanvas(d, themeIdx, dates) {
           const hasNote = !!cls.note;
           if (txt.length <= 5) {
             ctx.font = '600 17px sans-serif';
-            ctx.fillText(txt, cx + COL_W / 2, ry + ROW_H / 2 - (hasNote ? 11 : 0));
+            ctx.fillText(txt, textCX, ry + ROW_H / 2 - (hasNote ? 11 : 0));
           } else {
             ctx.font = '600 15px sans-serif';
-            ctx.fillText(txt.slice(0, 5), cx + COL_W / 2, ry + ROW_H / 2 - (hasNote ? 20 : 11));
-            ctx.fillText(txt.slice(5),    cx + COL_W / 2, ry + ROW_H / 2 - (hasNote ? 4  : -11));
+            ctx.fillText(txt.slice(0, 5), textCX, ry + ROW_H / 2 - (hasNote ? 20 : 11));
+            ctx.fillText(txt.slice(5),    textCX, ry + ROW_H / 2 - (hasNote ? 4  : -11));
           }
           if (hasNote) {
             ctx.font = '13px sans-serif';
             ctx.fillStyle = col.text + 'AA';
             const n = cls.note.length > 7 ? cls.note.slice(0, 7) + '…' : cls.note;
-            ctx.fillText(n, cx + COL_W / 2, ry + ROW_H - 12);
+            ctx.fillText(n, textCX, ry + ROW_H - 12);
           }
         }
 
@@ -1144,13 +1166,23 @@ function wrapText(ctx, text, maxWidth) {
   return lines;
 }
 
-function rrFill(ctx, x, y, w, h, r) {
+function roundRectPath(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
   ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
   ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
   ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
-  ctx.closePath(); ctx.fill();
+  ctx.closePath();
+}
+
+function rrFill(ctx, x, y, w, h, r) {
+  roundRectPath(ctx, x, y, w, h, r);
+  ctx.fill();
+}
+
+function rrStroke(ctx, x, y, w, h, r) {
+  roundRectPath(ctx, x, y, w, h, r);
+  ctx.stroke();
 }
 
 function dlImg(){
